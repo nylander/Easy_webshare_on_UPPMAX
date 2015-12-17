@@ -11,6 +11,7 @@
 ## Usage:       webshare.sh [-f folder] [-u user] [-h]
 ## By:          Johan Nylander, BILS
 ## Version:     12/17/2015 09:25:54 AM
+## Src:         https://github.com/nylander/Easy_webshare_on_UPPMAX
 
 ## Check if we can run on system (UPPMAX)
 if [ ! -d "/proj" ] ; then

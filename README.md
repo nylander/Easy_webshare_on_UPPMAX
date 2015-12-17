@@ -116,3 +116,7 @@ they will be prompted for a User Name (`kxlvtr`), and a Password (`cvtddq`).
 
     The <folder> will be created if not already present.
 
+
+## Source
+
+[https://github.com/nylander/Easy_webshare_on_UPPMAX](https://github.com/nylander/Easy_webshare_on_UPPMAX)
