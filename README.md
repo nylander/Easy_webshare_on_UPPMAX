@@ -81,9 +81,9 @@ and then run the script without arguments:
 The output from the script looks something like this:
 
     folder to share (set by pwd): /proj/b123456/webexport/seqs
-         URL: http://export.uppmax.uu.se/b123456/seqs
-        User: kxlvtr
-    Password: cvtddq
+          URL: http://export.uppmax.uu.se/b123456/seqs
+    User Name: kxlvtr
+     Password: cvtddq
     
 Make sure you write down the information and then share it.
 

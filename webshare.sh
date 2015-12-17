@@ -150,8 +150,8 @@ chmod -R ugo+r $FOLDER
 find $FOLDER -type d -exec chmod 755 {} +
 
 ## Print user+passwd to stdout. Write them down.
-echo "     URL: http://export.uppmax.uu.se/$PROJID/$F"
-echo "    User: $NAME"
-echo "Password: $PWD"
+echo "      URL: http://export.uppmax.uu.se/$PROJID/$F"
+echo "User Name: $NAME"
+echo " Password: $PWD"
 
  
