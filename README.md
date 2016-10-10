@@ -6,7 +6,7 @@ Version: 12/17/2015 09:12:09 AM
 
 File: `/proj/b2011210/dlbin/webshare.sh`
 
-See also: [https://www.uppmax.uu.se/webexport-guide]([https://www.uppmax.uu.se/webexport-guide)
+See also: [http://uppmax.uu.se/support-sv/user-guides/webexport-guide](http://uppmax.uu.se/support-sv/user-guides/webexport-guide)
 
 ---
 
