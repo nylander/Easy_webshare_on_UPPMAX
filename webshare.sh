@@ -9,8 +9,8 @@
 ## Folder:      /proj/<projid>/webexport/<folder>
 ## URL:         http://export.uppmax.uu.se/<projid>/<folder>
 ## Usage:       webshare.sh [-f folder] [-u user] [-h]
-## By:          Johan Nylander, BILS
-## Version:     12/17/2015 09:25:54 AM
+## By:          Johan Nylander, NBIS
+## Version:     03/02/2017 12:22:18 PM
 ## Src:         https://github.com/nylander/Easy_webshare_on_UPPMAX
 
 ## Check if we can run on system (UPPMAX)
@@ -23,7 +23,7 @@ if [ ! -r "/dev/urandom" ] ; then
     exit 1
 fi
 
-## Check arguments, "space style" ( proa.sh -f arg -b arg)
+## Check arguments, "space style" ( prog.sh -f arg -b arg)
 while [[ $# > 1 ]]
 do
 key="$1"
@@ -105,7 +105,8 @@ else
     FOLDER=$(pwd)
     F=$(basename $FOLDER)
     if [[ "$FOLDER" == $WEBDIR/$F ]] ; then
-        echo "folder to share (set by pwd): $FOLDER"
+        echo ""
+        echo "Folder to share (set by pwd): $FOLDER"
     else
         echo "$FOLDER is not inside $WEBDIR ?"
         echo "Need to run the script from inside the directory to be shared if run without arguments."
@@ -116,15 +117,12 @@ fi
 ## Set user
 if [ -n "$NAME" ]; then
     echo ""
-    #echo "name set manually: $NAME"
 else
     NAME=$(< /dev/urandom tr -dc a-z | head -c6)
-    #echo "name set randomly: $NAME"
 fi
 
 ## Create password
 PWD=$(< /dev/urandom tr -dc a-z | head -c6)
-#echo "generated password: $PWD"
 
 ## Create .htpasswd. If file exists, add user.
 if [ -e "$FOLDER/.htpasswd" ] ;then
@@ -150,8 +148,13 @@ chmod -R ugo+r $FOLDER
 find $FOLDER -type d -exec chmod 755 {} +
 
 ## Print user+passwd to stdout. Write them down.
+echo ""
 echo "      URL: http://export.uppmax.uu.se/$PROJID/$F"
 echo "User Name: $NAME"
 echo " Password: $PWD"
+echo ""
+echo "Need a tip? Try"
+echo ""
+echo "  wget -r -nH -np --cut-dirs=1 -R \"index.html*\" --user=$NAME --password=$PWD  http://export.uppmax.uu.se/$PROJID/$F"
+echo ""
 
- 

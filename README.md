@@ -1,8 +1,8 @@
 # Easy Web Share on UPPMAX
 
-By: Johan.Nylander\@bils.se
+By: Johan.Nylander\@nbis.se
 
-Version: 12/17/2015 09:12:09 AM
+Version: 03/02/2017 12:40:02 PM
 
 File: `/proj/b2011210/dlbin/webshare.sh`
 
@@ -80,7 +80,8 @@ and then run the script without arguments:
 
 The output from the script looks something like this:
 
-    folder to share (set by pwd): /proj/b123456/webexport/seqs
+    Folder to share (set by pwd): /proj/b123456/webexport/seqs
+
           URL: http://export.uppmax.uu.se/b123456/seqs
     User Name: kxlvtr
      Password: cvtddq
