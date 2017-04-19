@@ -10,7 +10,7 @@
 ## URL:         http://export.uppmax.uu.se/<projid>/<folder>
 ## Usage:       webshare.sh [-f folder] [-u user] [-h]
 ## By:          Johan Nylander, NBIS
-## Version:     03/02/2017 12:22:18 PM
+## Version:     04/19/2017 02:45:15 PM
 ## Src:         https://github.com/nylander/Easy_webshare_on_UPPMAX
 
 ## Check if we can run on system (UPPMAX)
@@ -51,7 +51,7 @@ case $key in
     ;;
     -h|--help)
     echo "Webshare files in /proj/<projid>/webshare/<folder>."
-    echo "The URL (password protected) will be http://export.uppmax.uu.se/<projid>/<folder>"
+    echo "The URL (password protected) will be https://export.uppmax.uu.se/<projid>/<folder>"
     echo "Usage:"
     echo "    First, create <folder> with content to be shared."
     echo "    Then, cd to <folder> and run:"
@@ -149,12 +149,12 @@ find $FOLDER -type d -exec chmod 755 {} +
 
 ## Print user+passwd to stdout. Write them down.
 echo ""
-echo "      URL: http://export.uppmax.uu.se/$PROJID/$F"
+echo "      URL: https://export.uppmax.uu.se/$PROJID/$F"
 echo "User Name: $NAME"
 echo " Password: $PWD"
 echo ""
 echo "Need a tip? Try"
 echo ""
-echo "  wget -r -nH -np --cut-dirs=1 -R \"index.html*\" --user=$NAME --password=$PWD  http://export.uppmax.uu.se/$PROJID/$F"
+echo "  wget -r -nH -np --cut-dirs=1 -R \"index.html*\" --user=$NAME --password=$PWD  https://export.uppmax.uu.se/$PROJID/$F"
 echo ""
 
