@@ -2,7 +2,7 @@
 
 By: Johan.Nylander\@nbis.se
 
-Version: 04/19/2017 02:54:03 PM
+Version: 04/19/2017 03:03:14 PM
 
 File: `/proj/b2011210/dlbin/webshare.sh`
 
@@ -85,10 +85,14 @@ The output from the script looks something like this:
           URL: https://export.uppmax.uu.se/b123456/seqs
     User Name: kxlvtr
      Password: cvtddq
+
+    Need a tip? Try
+
+      wget -r -nH -np --cut-dirs=1 -R "index.html*" --user=kxlvtr --password=cvtddq  https://export.uppmax.uu.se/b123456/seqs
     
 Make sure you write down the information and then share it.
 
-When some one attempts to access the URL
+When someone attempts to access the URL
 [https://export.uppmax.uu.se/b123456/seqs](https://export.uppmax.uu.se/b123456/seqs),
 they will be prompted for a User Name (`kxlvtr`), and a Password (`cvtddq`).
 
@@ -103,7 +107,7 @@ they will be prompted for a User Name (`kxlvtr`), and a Password (`cvtddq`).
 #### Description
 
     Webshare files in /proj/<projid>/webshare/<folder>.
-    The URL (password protected) will be http://export.uppmax.uu.se/<projid>/<folder>
+    The URL (password protected) will be https://export.uppmax.uu.se/<projid>/<folder>
     Usage:
         First, create <folder> with content to be shared.
         Then, cd to <folder> and run:
