@@ -2,7 +2,7 @@
 
 By: Johan.Nylander\@nbis.se
 
-Version: 03/02/2017 12:40:02 PM
+Version: 04/19/2017 02:54:03 PM
 
 File: `/proj/b2011210/dlbin/webshare.sh`
 
@@ -23,7 +23,7 @@ See also: [http://uppmax.uu.se/support-sv/user-guides/webexport-guide](http://up
 
 In this example we wish to share sequences delivered to your project's
 INBOX (folder `/proj/b123456/INBOX/My.Name_15_00`) so it can be accessable
-on the URL [http://export.uppmax.uu.se/b123456/seqs](http://export.uppmax.uu.se/b123456/seqs).
+on the URL [https://export.uppmax.uu.se/b123456/seqs](https://export.uppmax.uu.se/b123456/seqs).
 Note that you need to change `b123456` and `My.Name_15_00` to fit your needs.
 
 ### 1. Set PATH in order to find the script
@@ -82,14 +82,14 @@ The output from the script looks something like this:
 
     Folder to share (set by pwd): /proj/b123456/webexport/seqs
 
-          URL: http://export.uppmax.uu.se/b123456/seqs
+          URL: https://export.uppmax.uu.se/b123456/seqs
     User Name: kxlvtr
      Password: cvtddq
     
 Make sure you write down the information and then share it.
 
 When some one attempts to access the URL
-[http://export.uppmax.uu.se/b123456/seqs](http://export.uppmax.uu.se/b123456/seqs),
+[https://export.uppmax.uu.se/b123456/seqs](https://export.uppmax.uu.se/b123456/seqs),
 they will be prompted for a User Name (`kxlvtr`), and a Password (`cvtddq`).
 
 ---
