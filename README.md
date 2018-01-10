@@ -1,5 +1,7 @@
 # Easy Web Share on UPPMAX
 
+TODO: rewrite for decomission of milou
+
 By: Johan.Nylander\@nbis.se
 
 Version: 04/19/2017 03:03:14 PM
