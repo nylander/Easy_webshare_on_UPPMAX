@@ -1,6 +1,6 @@
 # Easy Web Share on UPPMAX
 
-File: `/proj/b2011210/dlbin/webshare.sh`
+File: `/proj/uppstore2017206/b2011210/dlbin/webshare.sh`
 
 By: Johan.Nylander\@nbis.se
 
@@ -15,7 +15,7 @@ See also: [http://uppmax.uu.se/support-sv/user-guides/webexport-guide](http://up
     mkdir -p /proj/xyz123/webexport/share
     cd /proj/xyz123/webexport/share
     cp -r /path/to/some_folder_or_file .
-    /proj/b2011210/dlbin/webshare.sh
+    /proj/uppstore2017206/b2011210/dlbin/webshare.sh
 
 ---
 
@@ -29,13 +29,13 @@ Note that you need to change `b123456` and `My.Name_15_00` to fit your needs.
 ### 1. Set PATH in order to find the script
 
 You can run the script by specifying the full path, or alternatively, make sure you have
-the `/proj/b2011210/dlbin` directory in your PATH variable:
+the `/proj/uppstore2017206/b2011210/dlbin` directory in your PATH variable:
 
-    export PATH=$PATH:/proj/b2011210/dlbin
+    export PATH=$PATH:/proj/uppstore2017206/b2011210/dlbin
 
 (The above line can also be included in your `.bash_profile`).
 
-The full path to the script is `/proj/b2011210/dlbin/webshare.sh`.
+The full path to the script is `/proj/uppstore2017206/b2011210/dlbin/webshare.sh`.
 
 
 ### 2. Create a folder to share
@@ -74,7 +74,7 @@ and then run the script without arguments:
 
     webshare.sh
 
-(or, if the script is not found in the PATH, try `/proj/b2011210/dlbin/webshare.sh`)
+(or, if the script is not found in the PATH, try `/proj/uppstore2017206/b2011210/dlbin/webshare.sh`)
 
 ### 5. Share the link!
 
