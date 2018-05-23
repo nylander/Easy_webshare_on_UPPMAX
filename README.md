@@ -1,12 +1,10 @@
 # Easy Web Share on UPPMAX
 
-TODO: rewrite for decomission of milou
+File: `/proj/b2011210/dlbin/webshare.sh`
 
 By: Johan.Nylander\@nbis.se
 
-Version: 04/19/2017 03:03:14 PM
-
-File: `/proj/b2011210/dlbin/webshare.sh`
+Version: Tue 22 maj 2018 08:29:16
 
 See also: [http://uppmax.uu.se/support-sv/user-guides/webexport-guide](http://uppmax.uu.se/support-sv/user-guides/webexport-guide)
 
@@ -14,8 +12,8 @@ See also: [http://uppmax.uu.se/support-sv/user-guides/webexport-guide](http://up
 
 #### For the Impatient:
 
-    mkdir -p /proj/b123456/webexport/share
-    cd /proj/b123456/webexport/share
+    mkdir -p /proj/xyz123/webexport/share
+    cd /proj/xyz123/webexport/share
     cp -r /path/to/some_folder_or_file .
     /proj/b2011210/dlbin/webshare.sh
 
@@ -24,13 +22,13 @@ See also: [http://uppmax.uu.se/support-sv/user-guides/webexport-guide](http://up
 ## HOWTO 
 
 In this example we wish to share sequences delivered to your project's
-INBOX (folder `/proj/b123456/INBOX/My.Name_15_00`) so it can be accessable
+INBOX (folder `/proj/b123456/INBOX/My.Name_15_00`) so it can be accessible
 on the URL [https://export.uppmax.uu.se/b123456/seqs](https://export.uppmax.uu.se/b123456/seqs).
 Note that you need to change `b123456` and `My.Name_15_00` to fit your needs.
 
 ### 1. Set PATH in order to find the script
 
-You can run the script by specifying the full path, or alternativelly, make sure you have
+You can run the script by specifying the full path, or alternatively, make sure you have
 the `/proj/b2011210/dlbin` directory in your PATH variable:
 
     export PATH=$PATH:/proj/b2011210/dlbin
@@ -43,7 +41,7 @@ The full path to the script is `/proj/b2011210/dlbin/webshare.sh`.
 ### 2. Create a folder to share
 
 Files to be shared from UPPMAX need to be in a special place in order for
-the webserver to see them. This means that we need to put files from our INBOX to a
+the web server to see them. This means that we need to put files from our INBOX to a
 folder inside a `webexport` folder. In this example, we wish the shared folder to be
 named `seqs`, and this folder need to be inside the `/proj/b123456/webexport` folder.
 If you don't already have the `webexport` folder, you may create it first,
@@ -58,7 +56,7 @@ or simply do:
 from the `INBOX` - you need to use the `cp` command in order to correctly change the
 ownerships of the transferred files! Normally you would have used, e.g., `mv`, but this
 will not work on UPPMAX (UPPMAX's `mv` changes ownerships correctly for files, but not
-for folders). Furthermore, the files need to be readable by the webserver, so symbolic
+for folders). Furthermore, the files need to be readable by the web server, so symbolic
 links will not work.
 
 So to copy a whole folder, use:
