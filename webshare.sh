@@ -7,10 +7,10 @@
 ##              Access to URL will be password protected.
 ##              Password and, optimally, user, will be set randomly.
 ## Folder:      /proj/<projid>/webexport/<folder>
-## URL:         http://export.uppmax.uu.se/<projid>/<folder>
+## URL:         http://export.uppmax.uu.se/<projid>/<folder>/
 ## Usage:       webshare.sh [-f folder] [-u user] [-h]
 ## By:          Johan Nylander, NBIS
-## Version:     Thu 28 Jun 2018 02:52:57 PM CEST
+## Version:     Thu 28 Jun 2018 06:52:24 PM CEST
 ## Src:         https://github.com/nylander/Easy_webshare_on_UPPMAX
 
 
@@ -40,8 +40,8 @@ do
         shift
         ;;
         -h|--help)
-        echo "Webshared files in /proj/<projid>/webshare/<folder>."
-        echo "The URL (password protected) will be https://export.uppmax.uu.se/<projid>/<folder>"
+        echo "Webshared files in /proj/<projid>/webshare/<folder>/."
+        echo "The URL (password protected) will be https://export.uppmax.uu.se/<projid>/<folder>/"
         echo "Usage:"
         echo "    First, create <folder> with content to be shared."
         echo "    Then, cd to <folder> and run:"
@@ -149,7 +149,7 @@ find "$FOLDER" -type d -exec chmod 755 {} +
 
 ## Print user+passwd to stdout. Write them down.
 echo ""
-echo "      URL: https://export.uppmax.uu.se/$PROJID/$F"
+echo "      URL: https://export.uppmax.uu.se/$PROJID/$F/"
 echo "User Name: $NAME"
 echo " Password: $PWD"
 echo ""
