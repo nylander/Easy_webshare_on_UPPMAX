@@ -4,7 +4,7 @@ File: `/proj/uppstore2017206/b2011210/dlbin/webshare.sh`
 
 By: Johan.Nylander\@nbis.se
 
-Version: Tue 22 maj 2018 08:29:16
+Version: Thu 28 Jun 2018 06:59:33 PM CEST
 
 See also: [http://uppmax.uu.se/support-sv/user-guides/webexport-guide](http://uppmax.uu.se/support-sv/user-guides/webexport-guide)
 
@@ -23,7 +23,7 @@ See also: [http://uppmax.uu.se/support-sv/user-guides/webexport-guide](http://up
 
 In this example we wish to share sequences delivered to your project's
 INBOX (folder `/proj/b123456/INBOX/My.Name_15_00`) so it can be accessible
-on the URL [https://export.uppmax.uu.se/b123456/seqs](https://export.uppmax.uu.se/b123456/seqs).
+on the URL [https://export.uppmax.uu.se/b123456/seqs/](https://export.uppmax.uu.se/b123456/seqs/).
 Note that you need to change `b123456` and `My.Name_15_00` to fit your needs.
 
 ### 1. Set PATH in order to find the script
@@ -80,9 +80,9 @@ and then run the script without arguments:
 
 The output from the script looks something like this:
 
-    Folder to share (set by pwd): /proj/b123456/webexport/seqs
+    Folder to share (set by pwd): /proj/b123456/webexport/seqs/
 
-          URL: https://export.uppmax.uu.se/b123456/seqs
+          URL: https://export.uppmax.uu.se/b123456/seqs/
     User Name: kxlvtr
      Password: cvtddq
 
@@ -92,8 +92,8 @@ The output from the script looks something like this:
     
 Make sure you write down the information and then share it.
 
-When someone attempts to access the URL
-[https://export.uppmax.uu.se/b123456/seqs](https://export.uppmax.uu.se/b123456/seqs),
+When someone attempts to access the URL (note the trailing dash)
+[https://export.uppmax.uu.se/b123456/seqs/](https://export.uppmax.uu.se/b123456/seqs/),
 they will be prompted for a User Name (`kxlvtr`), and a Password (`cvtddq`).
 
 ---
@@ -106,8 +106,8 @@ they will be prompted for a User Name (`kxlvtr`), and a Password (`cvtddq`).
 
 #### Description
 
-    Webshare files in /proj/<projid>/webshare/<folder>.
-    The URL (password protected) will be https://export.uppmax.uu.se/<projid>/<folder>
+    Webshare files in /proj/<projid>/webshare/<folder>/.
+    The URL (password protected) will be https://export.uppmax.uu.se/<projid>/<folder>/
     Usage:
         First, create <folder> with content to be shared.
         Then, cd to <folder> and run:
