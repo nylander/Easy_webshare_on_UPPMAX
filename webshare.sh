@@ -1,4 +1,4 @@
-#!/bin/bash -l
+#!/bin/bash
 
 ## Description: Quick webshare a folder on UPPMAX.
 ##              Folder needs to be in /proj/<projid>/webexport/.
@@ -10,8 +10,60 @@
 ## URL:         http://export.uppmax.uu.se/<projid>/<folder>
 ## Usage:       webshare.sh [-f folder] [-u user] [-h]
 ## By:          Johan Nylander, NBIS
-## Version:     04/19/2017 02:45:15 PM
+## Version:     Thu 28 Jun 2018 02:52:57 PM CEST
 ## Src:         https://github.com/nylander/Easy_webshare_on_UPPMAX
+
+
+## Check arguments, "space style" ( prog.sh -f arg -b arg)
+while [[ "$#" -gt 0 ]]
+do
+    key="$1"
+    case $key in
+        -f|--folder)
+        FOLDER="$2"
+        shift
+        ;;
+        -d|--dir)
+        FOLDER="$2"
+        shift
+        ;;
+        -n|--name)
+        NAME="$2"
+        shift
+        ;;
+        -u|--user)
+        NAME="$2"
+        shift
+        ;;
+        -p|--project)
+        PROJID="$2"
+        shift
+        ;;
+        -h|--help)
+        echo "Webshared files in /proj/<projid>/webshare/<folder>."
+        echo "The URL (password protected) will be https://export.uppmax.uu.se/<projid>/<folder>"
+        echo "Usage:"
+        echo "    First, create <folder> with content to be shared."
+        echo "    Then, cd to <folder> and run:"
+        echo ""
+        echo "        webshare.sh"
+        echo ""
+        echo "    The user and password will be written to stdout. Write them down."
+        echo "    Optionally, both <folder> and <user> can be given as arguments:"
+        echo ""
+        echo "        webshare.sh -f <folder> -u <user>"
+        echo ""
+        echo "    The <folder> will be created if not already present."
+        exit 1
+        ;;
+        *)
+        echo "Unknown argument"
+        echo "Usage: webshare.sh [-h] [-f folder] [-u user]"
+        exit 1
+        ;;
+    esac
+    shift
+done
 
 ## Check if we can run on system (UPPMAX)
 if [ ! -d "/proj" ] ; then
@@ -22,58 +74,6 @@ if [ ! -r "/dev/urandom" ] ; then
     echo "Can not read file /dev/urandom on this system."
     exit 1
 fi
-
-## Check arguments, "space style" ( prog.sh -f arg -b arg)
-while [[ $# > 1 ]]
-do
-key="$1"
-
-case $key in
-    -f|--folder)
-    FOLDER="$2"
-    shift
-    ;;
-    -d|--dir)
-    FOLDER="$2"
-    shift
-    ;;
-    -n|--name)
-    NAME="$2"
-    shift
-    ;;
-    -u|--user)
-    NAME="$2"
-    shift
-    ;;
-    -p|--project)
-    PROJID="$2"
-    shift
-    ;;
-    -h|--help)
-    echo "Webshare files in /proj/<projid>/webshare/<folder>."
-    echo "The URL (password protected) will be https://export.uppmax.uu.se/<projid>/<folder>"
-    echo "Usage:"
-    echo "    First, create <folder> with content to be shared."
-    echo "    Then, cd to <folder> and run:"
-    echo ""
-    echo "        webshare.sh"
-    echo ""
-    echo "    The user and password will be written to stdout. Write them down."
-    echo "    Optionally, both <folder> and <user> can be given as arguments:"
-    echo ""
-    echo "        webshare.sh -f <folder> -u <user>"
-    echo ""
-    echo "    The <folder> will be created if not already present."
-    exit 1
-    ;;
-    *)
-    echo "Unknown argument"
-    echo "Usage: webshare.sh [-h] [-f folder] [-u user]"
-    exit 1
-    ;;
-esac
-shift
-done
 
 ## Set project id
 if [ -z "$PROJID" ]; then
@@ -90,12 +90,12 @@ fi
 WEBDIR="/proj/$PROJID/webexport"
 if [ -n "$FOLDER" ]; then
     if [ -e "$WEBDIR/$FOLDER" ] ; then
-        echo "folder exists in $WEBDIR: $(realpath $FOLDER)"
+        echo "folder exists in $WEBDIR: $(realpath "$FOLDER")"
     else
         echo "folder does not exist in $WEBDIR"
-        FOLDER=$WEBDIR/$FOLDER
-        mkdir -v -p $FOLDER
-        chmod -v -R a+r $FOLDER
+        FOLDER="$WEBDIR/$FOLDER"
+        mkdir -v -p "$FOLDER"
+        chmod -v -R a+r "$FOLDER"
         if [ ! -e "$FOLDER" ] ; then
             echo "failed to create $FOLDER"
             exit 1
@@ -103,8 +103,8 @@ if [ -n "$FOLDER" ]; then
     fi
 else
     FOLDER=$(pwd)
-    F=$(basename $FOLDER)
-    if [[ "$FOLDER" == $WEBDIR/$F ]] ; then
+    F=$(basename "$FOLDER")
+    if [[ "$FOLDER" == "$WEBDIR/$F" ]] ; then
         echo ""
         echo "Folder to share (set by pwd): $FOLDER"
     else
@@ -126,26 +126,26 @@ PWD=$(< /dev/urandom tr -dc a-z | head -c6)
 
 ## Create .htpasswd. If file exists, add user.
 if [ -e "$FOLDER/.htpasswd" ] ;then
-    echo -e "$NAME:$(perl -le 'print crypt("$ENV{PWD}","moresalt")')" >> $FOLDER/.htpasswd
+    echo -e "$NAME:$(perl -le 'print crypt("$ENV{PWD}","moresalt")')" >> "$FOLDER"/.htpasswd
 else
-    echo -e "$NAME:$(perl -le 'print crypt("$ENV{PWD}","moresalt")')" > $FOLDER/.htpasswd
+    echo -e "$NAME:$(perl -le 'print crypt("$ENV{PWD}","moresalt")')" > "$FOLDER"/.htpasswd
 fi
 
 ## Create .htaccess. If file exists, do nothing.
 if [ ! -e "$FOLDER/.htaccess" ] ;then
-    touch $FOLDER/.htaccess
-    echo "Options +Indexes"                  >> $FOLDER/.htaccess
-    echo "AuthType Basic"                    >> $FOLDER/.htaccess
-    echo "AuthUserFile $FOLDER/.htpasswd"    >> $FOLDER/.htaccess
-    echo "AuthName \"Private project area\"" >> $FOLDER/.htaccess
-    echo "Require valid-user"                >> $FOLDER/.htaccess
+    touch "$FOLDER"/.htaccess
+    echo "Options +Indexes"                  >> "$FOLDER"/.htaccess
+    echo "AuthType Basic"                    >> "$FOLDER"/.htaccess
+    echo "AuthUserFile $FOLDER/.htpasswd"    >> "$FOLDER"/.htaccess
+    echo "AuthName \"Private project area\"" >> "$FOLDER"/.htaccess
+    echo "Require valid-user"                >> "$FOLDER"/.htaccess
 fi
 
 ## Set files readable to all
-chmod -R ugo+r $FOLDER
+chmod -R ugo+r "$FOLDER"
 
 ## Make sure folders have o+x
-find $FOLDER -type d -exec chmod 755 {} +
+find "$FOLDER" -type d -exec chmod 755 {} +
 
 ## Print user+passwd to stdout. Write them down.
 echo ""
