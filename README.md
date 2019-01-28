@@ -4,7 +4,7 @@ File: `/proj/uppstore2017206/b2011210/dlbin/webshare.sh`
 
 By: Johan.Nylander\@nbis.se
 
-Version: Thu 28 Jun 2018 06:59:33 PM CEST
+Version: Mon 28 jan 2019 18:01:46
 
 See also: [http://uppmax.uu.se/support-sv/user-guides/webexport-guide](http://uppmax.uu.se/support-sv/user-guides/webexport-guide)
 
@@ -106,20 +106,21 @@ they will be prompted for a User Name (`kxlvtr`), and a Password (`cvtddq`).
 
 #### Description
 
-    Webshare files in /proj/<projid>/webshare/<folder>/.
+    Webshared files in /proj/<projid>/webshare/<folder>/.
     The URL (password protected) will be https://export.uppmax.uu.se/<projid>/<folder>/
     Usage:
         First, create <folder> with content to be shared.
         Then, cd to <folder> and run:
 
-        webshare.sh
+            webshare.sh
 
-    The user and password will be written to stdout. Write them down.
-    Optionally, both <folder> and <user> can be given as arguments:
+        The user and password will be written to stdout. Write them down.
+        Optionally, both <folder> (full path!) and <user> can be given as arguments:
 
-        webshare.sh -f <folder> -u <user>
+            webshare.sh -f <folder> -u <user>
 
-    The <folder> will be created if not already present.
+        The <folder> will be created if not already present.
+        Also note that the folder must reside inside a projects 'webshare' folder.
 
 
 ## Source

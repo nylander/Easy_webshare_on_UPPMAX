@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -l
 
 ## Description: Quick webshare a folder on UPPMAX.
 ##              Folder needs to be in /proj/<projid>/webexport/.
@@ -10,15 +10,14 @@
 ## URL:         http://export.uppmax.uu.se/<projid>/<folder>/
 ## Usage:       webshare.sh [-f folder] [-u user] [-h]
 ## By:          Johan Nylander, NBIS
-## Version:     Thu 28 Jun 2018 06:52:24 PM CEST
+## Version:     Mon 28 jan 2019 18:01:46
 ## Src:         https://github.com/nylander/Easy_webshare_on_UPPMAX
 
-
-## Check arguments, "space style" ( prog.sh -f arg -b arg)
+## Check arguments, "space style" ( webshare.sh -f arg -b arg)
 while [[ "$#" -gt 0 ]]
 do
     key="$1"
-    case $key in
+    case ${key} in
         -f|--folder)
         FOLDER="$2"
         shift
@@ -28,11 +27,11 @@ do
         shift
         ;;
         -n|--name)
-        NAME="$2"
+        USERNAME="$2"
         shift
         ;;
         -u|--user)
-        NAME="$2"
+        USERNAME="$2"
         shift
         ;;
         -p|--project)
@@ -49,11 +48,13 @@ do
         echo "        webshare.sh"
         echo ""
         echo "    The user and password will be written to stdout. Write them down."
-        echo "    Optionally, both <folder> and <user> can be given as arguments:"
+        echo "    Optionally, both <folder> (full path!) and <user> can be given as arguments:"
         echo ""
         echo "        webshare.sh -f <folder> -u <user>"
         echo ""
         echo "    The <folder> will be created if not already present."
+        echo "    Also note that the folder must reside inside a projects 'webshare' folder."
+        echo ""
         exit 1
         ;;
         *)
@@ -65,96 +66,116 @@ do
     shift
 done
 
-## Check if we can run on system (UPPMAX)
+## Check if we can run on UPPMAX (system specific)
 if [ ! -d "/proj" ] ; then
     echo "Can not find /proj directory on this system."
     exit 1
 fi
+
+## Check for presence of /dev/urandom
 if [ ! -r "/dev/urandom" ] ; then
     echo "Can not read file /dev/urandom on this system."
     exit 1
 fi
 
-## Set project id
-if [ -z "$PROJID" ]; then
-    ## Looks for b2014211 in /proj/b2014211/...
-    ## Need to be in the project tree to work (since using pwd)
-    PROJID=$(pwd | sed -e 's@/proj/\([^/]*\)/.*$@\1@')
-fi
-if [ ! -e "/proj/$PROJID" ] ; then
-    echo "Can not find folder /proj/$PROJID. Is project ID correct?"
-    exit 1
-fi
-
-## Set folder
-WEBDIR="/proj/$PROJID/webexport"
-if [ -n "$FOLDER" ]; then
-    if [ -e "$WEBDIR/$FOLDER" ] ; then
-        echo "folder exists in $WEBDIR: $(realpath "$FOLDER")"
+## Check provided (full) folder path and get PROJID. Folder path need to contain /proj/$PROJID/webexport
+if [ -n "${FOLDER}" ]; then
+    ## Find PROJID and also check if there is an "webexport" folder in the path
+    if [[ "${FOLDER}" =~ ^/proj/([^/]*)/webexport ]]; then
+        FOUNDPROJID=${BASH_REMATCH[1]}
+        if [ -z "${FOUNDPROJID}" ]; then
+            echo "Error: could not extract project id from path"
+        fi
+        ## Check if PROJID is also given, and if so, does the path and PROJID match
+        if [ -n "${PROJID}" ]; then
+            if [[ ! "${FOUNDPROJID}" == "${PROJID}" ]]; then
+                echo "Error: Can not find folder /proj/${PROJID}/webexport as part of path to folder (${FOLDER}). Is project path/project ID correct?"
+                exit 1
+            fi
+        else
+            PROJID="${FOUNDPROJID}"
+            WEBDIR="/proj/${PROJID}/webexport"
+        fi
+        WEBDIR="/proj/${PROJID}/webexport"
     else
-        echo "folder does not exist in $WEBDIR"
-        FOLDER="$WEBDIR/$FOLDER"
-        mkdir -v -p "$FOLDER"
-        chmod -v -R a+r "$FOLDER"
-        if [ ! -e "$FOLDER" ] ; then
-            echo "failed to create $FOLDER"
+        echo "Error: Can not find a webexport folder as part of path (${FOLDER}). Is project path correct?"
+        exit 1
+    fi
+
+    ## Path seems to contain necessary parts, but does folder exists?
+    if [ -e "${FOLDER}" ] ; then
+        echo "Folder to share exists in ${WEBDIR}: $(realpath "${FOLDER}")"
+    else
+        echo "Folder to share does not exist in ${WEBDIR}."
+        echo "Make sure that all files and folders you later put in the shared folder have correct permissions (readable to all)."
+        mkdir -v -p "${FOLDER}"
+        chmod -v -R a+r "${FOLDER}"
+        if [ ! -e "${FOLDER}" ] ; then
+            echo "failed to create ${FOLDER}"
             exit 1
         fi
     fi
+    F=$(basename "${FOLDER}")
 else
+    ## If no folder name is given, assume script is run in cwd
     FOLDER=$(pwd)
-    F=$(basename "$FOLDER")
-    if [[ "$FOLDER" == "$WEBDIR/$F" ]] ; then
-        echo ""
-        echo "Folder to share (set by pwd): $FOLDER"
+    F=$(basename "${FOLDER}")
+    if [[ "${FOLDER}" =~ ^/proj/([^/]*)/webexport ]] ; then
+        FOUNDPROJID=${BASH_REMATCH[1]}
+        if [ -z "${FOUNDPROJID}" ]; then
+            echo "Error: could not extract project id from path"
+        else
+            PROJID="${FOUNDPROJID}"
+        fi
+        echo "Folder to share (set by pwd): ${FOLDER}"
     else
-        echo "$FOLDER is not inside $WEBDIR ?"
+        echo "${FOLDER} is not inside ${WEBDIR} ?"
         echo "Need to run the script from inside the directory to be shared if run without arguments."
         exit 1
     fi
 fi
 
 ## Set user
-if [ -n "$NAME" ]; then
+if [ -n "${USERNAME}" ]; then
     echo ""
 else
-    NAME=$(< /dev/urandom tr -dc a-z | head -c6)
+    USERNAME=$(< /dev/urandom tr -dc a-z | head -c6)
 fi
 
 ## Create password
-PWD=$(< /dev/urandom tr -dc a-z | head -c6)
+PASSWORD=$(< /dev/urandom tr -dc a-z | head -c6)
 
 ## Create .htpasswd. If file exists, add user.
-if [ -e "$FOLDER/.htpasswd" ] ;then
-    echo -e "$NAME:$(perl -le 'print crypt("$ENV{PWD}","moresalt")')" >> "$FOLDER"/.htpasswd
+if [ -e "${FOLDER}/.htpasswd" ] ;then
+    echo -e "${USERNAME}:$(perl -le 'print crypt("$ENV{PASSWORD}","moresalt")')" >> "${FOLDER}/.htpasswd"
 else
-    echo -e "$NAME:$(perl -le 'print crypt("$ENV{PWD}","moresalt")')" > "$FOLDER"/.htpasswd
+    echo -e "${USERNAME}:$(perl -le 'print crypt("$ENV{PASSWORD}","moresalt")')" > "${FOLDER}/.htpasswd"
 fi
 
 ## Create .htaccess. If file exists, do nothing.
-if [ ! -e "$FOLDER/.htaccess" ] ;then
-    touch "$FOLDER"/.htaccess
-    echo "Options +Indexes"                  >> "$FOLDER"/.htaccess
-    echo "AuthType Basic"                    >> "$FOLDER"/.htaccess
-    echo "AuthUserFile $FOLDER/.htpasswd"    >> "$FOLDER"/.htaccess
-    echo "AuthName \"Private project area\"" >> "$FOLDER"/.htaccess
-    echo "Require valid-user"                >> "$FOLDER"/.htaccess
+if [ ! -e "${FOLDER}/.htaccess" ] ; then
+    touch "${FOLDER}/.htaccess"
+    echo "Options +Indexes"                  >> "${FOLDER}/.htaccess"
+    echo "AuthType Basic"                    >> "${FOLDER}/.htaccess"
+    echo "AuthUserFile ${FOLDER}/.htpasswd"  >> "${FOLDER}/.htaccess"
+    echo "AuthName \"Private project area\"" >> "${FOLDER}/.htaccess"
+    echo "Require valid-user"                >> "${FOLDER}/.htaccess"
 fi
 
 ## Set files readable to all
-chmod -R ugo+r "$FOLDER"
+chmod -R ugo+r "${FOLDER}"
 
 ## Make sure folders have o+x
-find "$FOLDER" -type d -exec chmod 755 {} +
+find "${FOLDER}" -type d -exec chmod 755 {} +
 
 ## Print user+passwd to stdout. Write them down.
 echo ""
-echo "      URL: https://export.uppmax.uu.se/$PROJID/$F/"
-echo "User Name: $NAME"
-echo " Password: $PWD"
+echo "      URL: https://export.uppmax.uu.se/${PROJID}/${F}/"
+echo "User Name: ${USERNAME}"
+echo " Password: ${PASSWORD}"
 echo ""
 echo "Need a tip? Try"
 echo ""
-echo "  wget -r -nH -np --cut-dirs=1 -R \"index.html*\" --user=$NAME --password=$PWD  https://export.uppmax.uu.se/$PROJID/$F"
+echo "  wget -r -nH -np --cut-dirs=1 -R \"index.html*\" --user=${USERNAME} --password=${PASSWORD}  https://export.uppmax.uu.se/${PROJID}/${F}"
 echo ""
 
