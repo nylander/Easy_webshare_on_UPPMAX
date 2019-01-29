@@ -129,6 +129,7 @@ else
         FOUNDPROJID=${BASH_REMATCH[1]}
         if [ -z "${FOUNDPROJID}" ]; then
             echo "Error: could not extract project id from path"
+            exit 1
         else
             PROJID="${FOUNDPROJID}"
         fi
