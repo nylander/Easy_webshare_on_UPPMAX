@@ -4,7 +4,7 @@ File: `/proj/uppstore2017206/b2011210/dlbin/webshare.sh`
 
 By: Johan.Nylander\@nbis.se
 
-Version: Mon 28 jan 2019 18:01:46
+Version: Tue 29 Jan 2019 04:55:27 PM CET
 
 See also: [http://uppmax.uu.se/support-sv/user-guides/webexport-guide](http://uppmax.uu.se/support-sv/user-guides/webexport-guide)
 
@@ -92,7 +92,7 @@ The output from the script looks something like this:
     
 Make sure you write down the information and then share it.
 
-When someone attempts to access the URL (note the trailing dash)
+When someone attempts to access the URL (note the trailing slash)
 [https://export.uppmax.uu.se/b123456/seqs/](https://export.uppmax.uu.se/b123456/seqs/),
 they will be prompted for a User Name (`kxlvtr`), and a Password (`cvtddq`).
 
