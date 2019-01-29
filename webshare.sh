@@ -85,6 +85,7 @@ if [ -n "${FOLDER}" ]; then
         FOUNDPROJID=${BASH_REMATCH[1]}
         if [ -z "${FOUNDPROJID}" ]; then
             echo "Error: could not extract project id from path"
+            exit 1
         fi
         ## Check if PROJID is also given, and if so, does the path and PROJID match
         if [ -n "${PROJID}" ]; then
