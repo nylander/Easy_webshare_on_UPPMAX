@@ -10,7 +10,7 @@
 ## URL:         http://export.uppmax.uu.se/<projid>/<folder>/
 ## Usage:       webshare.sh [-f folder] [-u user] [-h]
 ## By:          Johan Nylander, NBIS
-## Version:     Mon 28 jan 2019 18:01:46
+## Version:     Tue 29 Jan 2019 04:03:40 PM CET
 ## Src:         https://github.com/nylander/Easy_webshare_on_UPPMAX
 
 ## Check arguments, "space style" ( webshare.sh -f arg -b arg)
@@ -89,7 +89,8 @@ if [ -n "${FOLDER}" ]; then
         ## Check if PROJID is also given, and if so, does the path and PROJID match
         if [ -n "${PROJID}" ]; then
             if [[ ! "${FOUNDPROJID}" == "${PROJID}" ]]; then
-                echo "Error: Can not find folder /proj/${PROJID}/webexport as part of path to folder (${FOLDER}). Is project path/project ID correct?"
+                echo "Error: Can not find folder /proj/${PROJID}/webexport as part of path to folder (${FOLDER})."
+                echo "Is project path/project ID correct?"
                 exit 1
             fi
         else
@@ -98,16 +99,20 @@ if [ -n "${FOLDER}" ]; then
         fi
         WEBDIR="/proj/${PROJID}/webexport"
     else
-        echo "Error: Can not find a webexport folder as part of path (${FOLDER}). Is project path correct?"
+        echo "Error: Can not find a webexport folder as part of path (${FOLDER})."
+        echo "Is project path correct?"
         exit 1
     fi
 
     ## Path seems to contain necessary parts, but does folder exists?
     if [ -e "${FOLDER}" ] ; then
+        echo ""
         echo "Folder to share exists in ${WEBDIR}: $(realpath "${FOLDER}")"
     else
+        echo ""
         echo "Folder to share does not exist in ${WEBDIR}."
-        echo "Make sure that all files and folders you later put in the shared folder have correct permissions (readable to all)."
+        echo "Make sure that all files and folders you later put in"
+        echo "the shared folder have correct permissions (readable to all)."
         mkdir -v -p "${FOLDER}"
         chmod -v -R a+r "${FOLDER}"
         if [ ! -e "${FOLDER}" ] ; then
@@ -142,8 +147,9 @@ else
     USERNAME=$(< /dev/urandom tr -dc a-z | head -c6)
 fi
 
-## Create password
+## Create password. Need export for perl.
 PASSWORD=$(< /dev/urandom tr -dc a-z | head -c6)
+export PASSWORD
 
 ## Create .htpasswd. If file exists, add user.
 if [ -e "${FOLDER}/.htpasswd" ] ;then
@@ -176,6 +182,6 @@ echo " Password: ${PASSWORD}"
 echo ""
 echo "Need a tip? Try"
 echo ""
-echo "  wget -r -nH -np --cut-dirs=1 -R \"index.html*\" --user=${USERNAME} --password=${PASSWORD}  https://export.uppmax.uu.se/${PROJID}/${F}"
+echo "  wget -r -nH -np --cut-dirs=1 -R \"index.html*\" --user=${USERNAME} --password=${PASSWORD}  https://export.uppmax.uu.se/${PROJID}/${F}/"
 echo ""
 

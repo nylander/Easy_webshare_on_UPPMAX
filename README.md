@@ -88,7 +88,7 @@ The output from the script looks something like this:
 
     Need a tip? Try
 
-      wget -r -nH -np --cut-dirs=1 -R "index.html*" --user=kxlvtr --password=cvtddq  https://export.uppmax.uu.se/b123456/seqs
+      wget -r -nH -np --cut-dirs=1 -R "index.html*" --user=kxlvtr --password=cvtddq  https://export.uppmax.uu.se/b123456/seqs/
     
 Make sure you write down the information and then share it.
 
