@@ -10,7 +10,7 @@
 ## URL:         http://export.uppmax.uu.se/<projid>/<folder>/
 ## Usage:       webshare.sh [-f folder] [-u user] [-h]
 ## By:          Johan Nylander, NBIS
-## Version:     Tue 29 Jan 2019 04:03:40 PM CET
+## Version:     Tue 26 nov 2019 16:16:40
 ## Src:         https://github.com/nylander/Easy_webshare_on_UPPMAX
 
 ## Check arguments, "space style" ( webshare.sh -f arg -b arg)
@@ -164,6 +164,7 @@ fi
 if [ ! -e "${FOLDER}/.htaccess" ] ; then
     touch "${FOLDER}/.htaccess"
     echo "Options +Indexes"                  >> "${FOLDER}/.htaccess"
+    echo "IndexIgnoreReset ON"               >> "${FOLDER}/.htaccess"
     echo "AuthType Basic"                    >> "${FOLDER}/.htaccess"
     echo "AuthUserFile ${FOLDER}/.htpasswd"  >> "${FOLDER}/.htaccess"
     echo "AuthName \"Private project area\"" >> "${FOLDER}/.htaccess"
@@ -184,6 +185,6 @@ echo " Password: ${PASSWORD}"
 echo ""
 echo "Need a tip? Try"
 echo ""
-echo "  wget -r -nH -np --cut-dirs=1 -R \"index.html*\" --user=${USERNAME} --password=${PASSWORD}  https://export.uppmax.uu.se/${PROJID}/${F}/"
+echo "  wget -m -nH -np --cut-dirs=1 -R \"index.html*\" --user=${USERNAME} --password=${PASSWORD} \"https://export.uppmax.uu.se/${PROJID}/${F}/\""
 echo ""
 
