@@ -10,7 +10,7 @@
 ## URL:         http://export.uppmax.uu.se/<projid>/<folder>/
 ## Usage:       webshare.sh [-f folder] [-u user] [-h]
 ## By:          Johan Nylander, NBIS
-## Version:     Tue 26 nov 2019 16:16:40
+## Version:     tor  5 dec 2019 12:34:06
 ## Src:         https://github.com/nylander/Easy_webshare_on_UPPMAX
 
 ## Check arguments, "space style" ( webshare.sh -f arg -b arg)
@@ -80,6 +80,11 @@ fi
 
 ## Check provided (full) folder path and get PROJID. Folder path need to contain /proj/$PROJID/webexport
 if [ -n "${FOLDER}" ]; then
+    ## Remove any leading '/crex' (Adhoc solution on current crex file system on uppmax)
+    if [[ "${FOLDER}" =~ ^/crex/proj/ ]]; then
+        FOLDER="${FOLDER/\/crex/}"
+        echo "Corrected the folder path by removing the preceding '/crex'"
+    fi
     ## Find PROJID and also check if there is an "webexport" folder in the path
     if [[ "${FOLDER}" =~ ^/proj/([^/]*)/webexport ]]; then
         FOUNDPROJID=${BASH_REMATCH[1]}
@@ -125,6 +130,11 @@ if [ -n "${FOLDER}" ]; then
 else
     ## If no folder name is given, assume script is run in cwd
     FOLDER=$(pwd)
+    ## Remove any leading '/crex' (Adhoc solution on current crex file system on uppmax)
+    if [[ "${FOLDER}" =~ ^/crex/proj/ ]]; then
+        FOLDER="${FOLDER/\/crex/}"
+        echo "Corrected the folder path by removing the preceding '/crex'"
+    fi
     F=$(basename "${FOLDER}")
     if [[ "${FOLDER}" =~ ^/proj/([^/]*)/webexport ]] ; then
         FOUNDPROJID=${BASH_REMATCH[1]}
