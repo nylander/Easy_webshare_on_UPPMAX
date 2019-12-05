@@ -4,8 +4,6 @@ File: `webshare.sh`
 
 By: Johan.Nylander\@nbis.se
 
-Version: Tue 26 nov 2019 16:19:43
-
 See also: [https://uppmax.uu.se/support-sv/user-guides/webexport-guide](https://uppmax.uu.se/support-sv/user-guides/webexport-guide)
 
 ---
