@@ -12,6 +12,7 @@
 ## By:          Johan Nylander, NBIS
 ## Version:     tor  5 dec 2019 12:34:06
 ## Src:         https://github.com/nylander/Easy_webshare_on_UPPMAX
+## License:     MIT, https://opensource.org/licenses/MIT
 
 ## Check arguments, "space style" ( webshare.sh -f arg -b arg)
 while [[ "$#" -gt 0 ]]
