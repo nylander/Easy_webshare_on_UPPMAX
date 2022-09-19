@@ -17,11 +17,11 @@ See also: [https://uppmax.uu.se/support-sv/user-guides/webexport-guide](https://
 
 ---
 
-## HOWTO 
+## HOWTO
 
 In this example we wish to share sequences delivered to your project's
-INBOX (folder `/proj/xyz123/INBOX/My.Name_15_00`) so it can be accessible
-on the URL [https://export.uppmax.uu.se/b123456/seqs/](https://export.uppmax.uu.se/xyz123/seqs/).
+INBOX (folder `/proj/xyx123/INBOX/My.Name_15_00`) so it can be accessible
+on the URL [https://export.uppmax.uu.se/xyz123/seqs/](https://export.uppmax.uu.se/zyz123/seqs/).
 Note that you need to change `xyz123` and `My.Name_15_00` to fit your needs.
 
 
@@ -29,12 +29,7 @@ Note that you need to change `xyz123` and `My.Name_15_00` to fit your needs.
 
 You may either download the script from the GitHub repository
 [https://github.com/nylander/Easy_webshare_on_UPPMAX](https://github.com/nylander/Easy_webshare_on_UPPMAX),
-or use a copy already available on Uppmax (full path:
-`/proj/snic2017-7-343/dlbin/webshare.sh`).
-
-Convenient would be to put the script in your `PATH`. For example:
-
-    export PATH=$PATH:/proj/snic2017-7-343/dlbin
+or use a copy already available on Uppmax.
 
 
 ### 2. Create a folder to share
@@ -73,9 +68,6 @@ and then run the script without arguments:
 
     webshare.sh
 
-(or, if the script is not found in the PATH, try
-`/proj/snic2017-7-343/dlbin/webshare.sh`)
-
 
 ### 5. Share the link!
 
@@ -90,7 +82,7 @@ The output from the script looks something like this:
     Need a tip? Try
 
       wget -m -nH -np --cut-dirs=1 -R "index.html*" --user=kxlvtr --password=cvtddq  https://export.uppmax.uu.se/xyz123/seqs/
-    
+
 Make sure you write down the information and then share it.
 
 When someone attempts to access the URL (note the trailing slash)
@@ -107,7 +99,7 @@ they will be prompted for a User Name (`kxlvtr`), and a Password (`cvtddq`).
 
 #### Description
 
-    Webshared files in /proj/<projid>/webshare/<folder>/.
+    Webshared files in /proj/<projid>/webexport/<folder>/.
     The URL (password protected) will be https://export.uppmax.uu.se/<projid>/<folder>/
     Usage:
         First, create <folder> with content to be shared.
@@ -121,7 +113,7 @@ they will be prompted for a User Name (`kxlvtr`), and a Password (`cvtddq`).
             webshare.sh -f <folder> -u <user>
 
         The <folder> will be created if not already present.
-        Also note that the folder must reside inside a projects 'webshare' folder.
+        Also note that the folder must reside inside a projects 'webexport' folder.
 
 
 ## Download
@@ -131,7 +123,7 @@ they will be prompted for a User Name (`kxlvtr`), and a Password (`cvtddq`).
 
 ## License and copyright
 
-Copyright (c) 2016-2020 Johan Nylander
+Copyright (c) 2016-2022 Johan Nylander
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

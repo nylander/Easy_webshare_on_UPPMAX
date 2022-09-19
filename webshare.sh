@@ -54,7 +54,7 @@ do
         echo "        webshare.sh -f <folder> -u <user>"
         echo ""
         echo "    The <folder> will be created if not already present."
-        echo "    Also note that the folder must reside inside a projects 'webshare' folder."
+        echo "    Also note that the folder must reside inside a projects 'webexport' folder."
         echo ""
         exit 1
         ;;
