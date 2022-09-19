@@ -3,14 +3,14 @@
 ## Description: Quick webshare a folder on UPPMAX.
 ##              Folder needs to be in /proj/<projid>/webexport/.
 ##              All files need to be readable by all on the server
-##              (chmod -R a+r /proj/<projid>/webshare/<folder>).
+##              (chmod -R a+r /proj/<projid>/webexport/<folder>).
 ##              Access to URL will be password protected.
 ##              Password and, optimally, user, will be set randomly.
 ## Folder:      /proj/<projid>/webexport/<folder>
 ## URL:         http://export.uppmax.uu.se/<projid>/<folder>/
 ## Usage:       webshare.sh [-f folder] [-u user] [-h]
 ## By:          Johan Nylander, NBIS
-## Version:     tor  5 dec 2019 12:34:06
+## Version:     Mon 19 sep 2022 16:37:45
 ## Src:         https://github.com/nylander/Easy_webshare_on_UPPMAX
 ## License:     MIT, https://opensource.org/licenses/MIT
 
@@ -40,7 +40,7 @@ do
         shift
         ;;
         -h|--help)
-        echo "Webshared files in /proj/<projid>/webshare/<folder>/."
+        echo "Webshared files in /proj/<projid>/webexport/<folder>/."
         echo "The URL (password protected) will be https://export.uppmax.uu.se/<projid>/<folder>/"
         echo "Usage:"
         echo "    First, create <folder> with content to be shared."
