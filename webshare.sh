@@ -1,73 +1,79 @@
 #!/bin/bash -l
 
-## Description: Quick webshare a folder on UPPMAX.
-##              Note: If the ID in /proj/<ID>/webexport/ is
-##              not identical to your project ID (project ID
-##              is typically in the form 'snic2020-12-234'),
-##              then the project ID needs to be provided.
-##              If uncertain, check with the command uquota.
-##              All files need to be readable by all on the server
-##              (chmod -R a+r /proj/<ID>/webexport/<folder>).
-##              Access to URL will be password protected.
-##              Password and, optimally, user, will be set randomly.
-## Folder:      /proj/<ID>/webexport/<folder>
-## URL:         http://export.uppmax.uu.se/<projid>/<folder>/
-## Usage:       webshare.sh [-f folder] [-u user] [-p projid] [-h]
-## By:          Johan Nylander, NBIS
-## Version:     Tue 28 feb 2023 21:28:29
-## Src:         https://github.com/nylander/Easy_webshare_on_UPPMAX
-## License:     MIT, https://opensource.org/licenses/MIT
+## Description:   Quick webshare a folder on UPPMAX.
+##                Note: If the ID in /proj/<ID>/webexport/ is
+##                not identical to your project ID (project ID
+##                is typically in the form 'snic2020-12-234'),
+##                then the project ID needs to be provided.
+##                If uncertain, check with the command uquota.
+##                All files need to be readable by all on the server
+##                (chmod -R a+r /proj/<ID>/webexport/<folder>).
+##                Access to URL will be password protected.
+##                Password and, optimally, user, will be set randomly.
+## Folder:        /proj/<ID>/webexport/<folder>
+## URL:           http://export.uppmax.uu.se/<projid>/<folder>/
+## Usage:         webshare.sh [-f folder] [-u user] [-p projid] [-h]
+## By:            Johan Nylander, NBIS
+## Src:           https://github.com/nylander/Easy_webshare_on_UPPMAX
+## License:       MIT, https://opensource.org/licenses/MIT
+## Last modified: tis feb 28, 2023  10:11
+
+VERSION=0.1
 
 ## Check arguments, "space style" ( webshare.sh -f arg -b arg)
 while [[ "$#" -gt 0 ]] ; do
     key="$1"
     case ${key} in
         -f|--folder)
-        FOLDER="$2"
-        shift
-        ;;
+            FOLDER="$2"
+            shift
+            ;;
         -d|--dir)
-        FOLDER="$2"
-        shift
-        ;;
+            FOLDER="$2"
+            shift
+            ;;
         -n|--name)
-        USERNAME="$2"
-        shift
-        ;;
+            USERNAME="$2"
+            shift
+            ;;
         -u|--user)
-        USERNAME="$2"
-        shift
-        ;;
+            USERNAME="$2"
+            shift
+            ;;
         -p|--project)
-        PROJID="$2"
-        shift
-        ;;
+            PROJID="$2"
+            shift
+            ;;
+        -v|--version)
+            echo "$VERSION"
+            exit
+            ;;
         -h|--help)
-        echo "Webshare files in /proj/<id>/webexport/<folder>/."
-        echo "The URL (password protected) will be https://export.uppmax.uu.se/<projid>/<folder>/"
-        echo "Note that the URL needs to contain a Project ID, which may or may not be the same"
-        echo "as the <id> (the File area). If uncertain, check with the command 'uquota' on rackham."
-        echo "Usage:"
-        echo "    First, create <folder> with content to be shared."
-        echo "    Then, cd to <folder> and run:"
-        echo ""
-        echo "        webshare.sh"
-        echo ""
-        echo "    The user and password will be written to stdout. Write them down."
-        echo "    Optionally, both <folder> (full path!), <user> and <projid> can be given as arguments:"
-        echo ""
-        echo "        webshare.sh -f <folder> -u <user> -p <projid>"
-        echo ""
-        echo "    The <folder> will be created if not already present."
-        echo "    Also note that the folder must reside inside a project 'webexport' folder."
-        echo ""
-        exit 1
-        ;;
+            echo "Webshare files in /proj/<id>/webexport/<folder>/."
+            echo "The URL (password protected) will be https://export.uppmax.uu.se/<projid>/<folder>/"
+            echo "Note that the URL needs to contain a Project ID, which may or may not be the same"
+            echo "as the <id> (the File area). If uncertain, check with the command 'uquota' on rackham."
+            echo "Usage:"
+            echo "    First, create <folder> with content to be shared."
+            echo "    Then, cd to <folder> and run:"
+            echo ""
+            echo "        webshare.sh"
+            echo ""
+            echo "    The user and password will be written to stdout. Write them down."
+            echo "    Optionally, <folder> (full path!), <user> and <projid> can be given as arguments:"
+            echo ""
+            echo "        webshare.sh -f <folder> -u <user> -p <projid>"
+            echo ""
+            echo "    The <folder> will be created if not already present."
+            echo "    Also note that the folder must reside inside a project 'webexport' folder."
+            echo ""
+            exit 1
+            ;;
         *)
-        echo "Unknown argument"
-        echo "Usage: webshare.sh [-h] [-f folder] [-u user] [-p projid]"
-        exit 1
-        ;;
+            echo "Unknown argument"
+            echo "Usage: webshare.sh [-h] [-f folder] [-u user] [-p projid]"
+            exit 1
+            ;;
     esac
     shift
 done
