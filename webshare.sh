@@ -1,22 +1,25 @@
 #!/bin/bash -l
 
 ## Description: Quick webshare a folder on UPPMAX.
-##              Folder needs to be in /proj/<projid>/webexport/.
+##              Note: If the ID in /proj/<ID>/webexport/ is
+##              not identical to your project ID (project ID
+##              is typically in the form 'snic2020-12-234'),
+##              then the project ID needs to be provided.
+##              If uncertain, check with the command uquota.
 ##              All files need to be readable by all on the server
-##              (chmod -R a+r /proj/<projid>/webexport/<folder>).
+##              (chmod -R a+r /proj/<ID>/webexport/<folder>).
 ##              Access to URL will be password protected.
 ##              Password and, optimally, user, will be set randomly.
-## Folder:      /proj/<projid>/webexport/<folder>
+## Folder:      /proj/<ID>/webexport/<folder>
 ## URL:         http://export.uppmax.uu.se/<projid>/<folder>/
-## Usage:       webshare.sh [-f folder] [-u user] [-h]
+## Usage:       webshare.sh [-f folder] [-u user] [-p projid] [-h]
 ## By:          Johan Nylander, NBIS
-## Version:     Mon 19 sep 2022 16:37:45
+## Version:     Tue 28 feb 2023 21:28:29
 ## Src:         https://github.com/nylander/Easy_webshare_on_UPPMAX
 ## License:     MIT, https://opensource.org/licenses/MIT
 
 ## Check arguments, "space style" ( webshare.sh -f arg -b arg)
-while [[ "$#" -gt 0 ]]
-do
+while [[ "$#" -gt 0 ]] ; do
     key="$1"
     case ${key} in
         -f|--folder)
@@ -40,8 +43,10 @@ do
         shift
         ;;
         -h|--help)
-        echo "Webshared files in /proj/<projid>/webexport/<folder>/."
+        echo "Webshare files in /proj/<id>/webexport/<folder>/."
         echo "The URL (password protected) will be https://export.uppmax.uu.se/<projid>/<folder>/"
+        echo "Note that the URL needs to contain a Project ID, which may or may not be the same"
+        echo "as the <id> (the File area). If uncertain, check with the command 'uquota' on rackham."
         echo "Usage:"
         echo "    First, create <folder> with content to be shared."
         echo "    Then, cd to <folder> and run:"
@@ -49,18 +54,18 @@ do
         echo "        webshare.sh"
         echo ""
         echo "    The user and password will be written to stdout. Write them down."
-        echo "    Optionally, both <folder> (full path!) and <user> can be given as arguments:"
+        echo "    Optionally, both <folder> (full path!), <user> and <projid> can be given as arguments:"
         echo ""
-        echo "        webshare.sh -f <folder> -u <user>"
+        echo "        webshare.sh -f <folder> -u <user> -p <projid>"
         echo ""
         echo "    The <folder> will be created if not already present."
-        echo "    Also note that the folder must reside inside a projects 'webexport' folder."
+        echo "    Also note that the folder must reside inside a project 'webexport' folder."
         echo ""
         exit 1
         ;;
         *)
         echo "Unknown argument"
-        echo "Usage: webshare.sh [-h] [-f folder] [-u user]"
+        echo "Usage: webshare.sh [-h] [-f folder] [-u user] [-p projid]"
         exit 1
         ;;
     esac
@@ -79,34 +84,49 @@ if [ ! -r "/dev/urandom" ] ; then
     exit 1
 fi
 
-## Check provided (full) folder path and get PROJID. Folder path need to contain /proj/$PROJID/webexport
+## Check for presence of uquota
+if [ ! command -v uquota &> /dev/null ] ; then
+    echo "Error: uquota command could not be found"
+    exit 1
+fi
+
+## Check provided (full) folder path and get PROJID
 if [ -n "${FOLDER}" ]; then
     ## Remove any leading '/crex' (Adhoc solution on current crex file system on uppmax)
-    if [[ "${FOLDER}" =~ ^/crex/proj/ ]]; then
+    if [[ "${FOLDER}" =~ ^/crex/proj/ ]] ; then
         FOLDER="${FOLDER/\/crex/}"
         echo "Corrected the folder path by removing the preceding '/crex'"
     fi
+
     ## Find PROJID and also check if there is an "webexport" folder in the path
-    if [[ "${FOLDER}" =~ ^/proj/([^/]*)/webexport ]]; then
-        FOUNDPROJID=${BASH_REMATCH[1]}
-        if [ -z "${FOUNDPROJID}" ]; then
-            echo "Error: could not extract project id from path"
+    if [[ "${FOLDER}" =~ ^/proj/([^/]*)/webexport ]] ; then
+        FOUNDID=${BASH_REMATCH[1]}
+        if [ -z "${FOUNDID}" ]; then
+            echo "Error: could not extract project id from path."
+            echo "Is there an 'webexport' folder in the path?"
             exit 1
         fi
-        ## Check if PROJID is also given, and if so, does the path and PROJID match
-        if [ -n "${PROJID}" ]; then
-            if [[ ! "${FOUNDPROJID}" == "${PROJID}" ]]; then
-                echo "Error: Can not find folder /proj/${PROJID}/webexport as part of path to folder (${FOLDER})."
+
+        ## Get the actual PROJID from uquota
+        UQPROJID=''
+        UQPROJID=$(uquota | grep -v -E '^Your|^---|^home' | awk -v var="/proj/$FOUNDID" '$2 == var {print $1}')
+        if [ -z "$UQPROJID" ] ; then
+            echo "Error: could not find project ID for file area name $FOUNDID"
+            exit 1
+        fi
+
+        ## Check if PROJID is also given, and if so, do they match
+        if [ -n "${PROJID}" ] ; then
+            if [[ ! "${UQPROJID}" == "${PROJID}" ]] ; then
+                echo "Error: the provided project id ($PROJID) does not correspond to"
+                echo "the id ($UQPROJID) owning the path to folder $FOLDER"
                 echo "Is project path/project ID correct?"
                 exit 1
             fi
-        else
-            PROJID="${FOUNDPROJID}"
-            WEBDIR="/proj/${PROJID}/webexport"
         fi
-        WEBDIR="/proj/${PROJID}/webexport"
+        WEBDIR="/proj/${FOUNDID}/webexport"
     else
-        echo "Error: Can not find a webexport folder as part of path (${FOLDER})."
+        echo "Error: Can not find a 'webexport' folder as part of provided path (${FOLDER})."
         echo "Is project path correct?"
         exit 1
     fi
@@ -123,7 +143,7 @@ if [ -n "${FOLDER}" ]; then
         mkdir -v -p "${FOLDER}"
         chmod -v -R a+r "${FOLDER}"
         if [ ! -e "${FOLDER}" ] ; then
-            echo "failed to create ${FOLDER}"
+            echo "Error: failed to create ${FOLDER}"
             exit 1
         fi
     fi
@@ -132,29 +152,36 @@ else
     ## If no folder name is given, assume script is run in cwd
     FOLDER=$(pwd)
     ## Remove any leading '/crex' (Adhoc solution on current crex file system on uppmax)
-    if [[ "${FOLDER}" =~ ^/crex/proj/ ]]; then
+    if [[ "${FOLDER}" =~ ^/crex/proj/ ]] ; then
         FOLDER="${FOLDER/\/crex/}"
         echo "Corrected the folder path by removing the preceding '/crex'"
     fi
     F=$(basename "${FOLDER}")
     if [[ "${FOLDER}" =~ ^/proj/([^/]*)/webexport ]] ; then
-        FOUNDPROJID=${BASH_REMATCH[1]}
-        if [ -z "${FOUNDPROJID}" ]; then
-            echo "Error: could not extract project id from path"
+        FOUNDID=${BASH_REMATCH[1]}
+        if [ -z "${FOUNDID}" ] ; then
+            echo "Error: could not extract project id from path."
             exit 1
         else
-            PROJID="${FOUNDPROJID}"
+            ## Get the actual PROJID from the UQUOTA_ARRAY
+            UQPROJID=''
+            UQPROJID=$(uquota | grep -v -E '^Your|^---|^home' | awk -v var="/proj/$FOUNDID" '$2 == var {print $1}')
+            if [ -z "$UQPROJID" ] ; then
+                echo "Error: could not find project ID for file area name $FOUNDID"
+                exit 1
+            fi
+            PROJID="${UQPROJID}"
         fi
         echo "Folder to share (set by pwd): ${FOLDER}"
     else
-        echo "${FOLDER} is not inside ${WEBDIR} ?"
+        echo "Error: ${FOLDER} is not inside ${WEBDIR} ?"
         echo "Need to run the script from inside the directory to be shared if run without arguments."
         exit 1
     fi
 fi
 
 ## Set user
-if [ -n "${USERNAME}" ]; then
+if [ -n "${USERNAME}" ] ; then
     echo ""
 else
     USERNAME=$(< /dev/urandom tr -dc a-z | head -c6)
@@ -165,7 +192,7 @@ PASSWORD=$(< /dev/urandom tr -dc a-z | head -c6)
 export PASSWORD
 
 ## Create .htpasswd. If file exists, add user.
-if [ -e "${FOLDER}/.htpasswd" ] ;then
+if [ -e "${FOLDER}/.htpasswd" ] ; then
     echo -e "${USERNAME}:$(perl -le 'print crypt("$ENV{PASSWORD}","moresalt")')" >> "${FOLDER}/.htpasswd"
 else
     echo -e "${USERNAME}:$(perl -le 'print crypt("$ENV{PASSWORD}","moresalt")')" > "${FOLDER}/.htpasswd"
