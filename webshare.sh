@@ -12,11 +12,11 @@
 ##                Password and, optimally, user, will be set randomly.
 ## Folder:        /proj/<ID>/webexport/<folder>
 ## URL:           http://export.uppmax.uu.se/<projid>/<folder>/
-## Usage:         webshare.sh [-f folder] [-u user] [-p projid] [-h]
+## Usage:         webshare.sh [-f folder] [-u user] [-p projid] [-v] [-h]
 ## By:            Johan Nylander, NBIS
 ## Src:           https://github.com/nylander/Easy_webshare_on_UPPMAX
 ## License:       MIT, https://opensource.org/licenses/MIT
-## Last modified: tis feb 28, 2023  10:11
+## Last modified: tis feb 28, 2023  10:15
 
 VERSION=0.1
 
@@ -71,7 +71,7 @@ while [[ "$#" -gt 0 ]] ; do
             ;;
         *)
             echo "Unknown argument"
-            echo "Usage: webshare.sh [-h] [-f folder] [-u user] [-p projid]"
+            echo "Usage: webshare.sh [-h] [-v] [-f folder] [-u user] [-p projid]"
             exit 1
             ;;
     esac

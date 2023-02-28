@@ -107,7 +107,7 @@ rackham.
 
 #### Usage
 
-    webshare.sh [-h] [-f folder] [-u user] [-p projid]
+    webshare.sh [-h] [-v] [-f folder] [-u user] [-p projid]
 
 #### Description
 
