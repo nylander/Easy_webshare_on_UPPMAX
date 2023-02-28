@@ -24,13 +24,11 @@ INBOX (folder `/proj/xyx123/INBOX/My.Name_15_00`) so it can be accessible
 on the URL [https://export.uppmax.uu.se/xyz123/seqs/](https://export.uppmax.uu.se/zyz123/seqs/).
 Note that you need to change `xyz123` and `My.Name_15_00` to fit your needs.
 
-
 ### 1. Localize the `webshare.sh` script
 
 You may either download the script from the GitHub repository
 [https://github.com/nylander/Easy_webshare_on_UPPMAX](https://github.com/nylander/Easy_webshare_on_UPPMAX),
 or use a copy already available on Uppmax.
-
 
 ### 2. Create a folder to share
 
@@ -43,11 +41,10 @@ folder, you may create it first, or simply do:
 
     mkdir -p /proj/xyz123/webexport/seqs
 
-
 ### 3. Copy files to be shared to the newly created folder 
 
 **Note**: this applies specifically for files and folders that will be
-transferred from the `INBOX` - you need to use the `cp` command in order to
+transferred from the `INBOX` -- you need to use the `cp` command in order to
 correctly change the ownerships of the transferred files! Normally you would
 have used, e.g., `mv`, but this will not work on UPPMAX (UPPMAX's `mv` changes
 ownerships correctly for files, but not for folders). Furthermore, the files
@@ -56,7 +53,6 @@ need to be readable by the web server, so symbolic links will not work.
 So to copy a whole folder, use:
 
     cp -r /proj/xyz123/INBOX/My.Name_15_00 /proj/xyz123/webexport/seqs
-
 
 ### 4. Run the `webshare.sh` script to create a password protected URL
 
@@ -67,7 +63,6 @@ Easiest is to `cd` into the folder to be shared:
 and then run the script without arguments:
 
     webshare.sh
-
 
 ### 5. Share the link!
 
@@ -89,18 +84,37 @@ When someone attempts to access the URL (note the trailing slash)
 [https://export.uppmax.uu.se/xyz123/seqs/](https://export.uppmax.uu.se/xyz123/seqs/),
 they will be prompted for a User Name (`kxlvtr`), and a Password (`cvtddq`).
 
+## Important note on file areas and project IDs
+
+New naming conventions of project folders on UPPMAX have comlicated matters
+when sharing slightly.  A project folder, or "folder area", can now be named
+something simple as `/proj/bobsproject`. And you may put a `webexport` folder
+inside `/proj/bobsproject` with files to be shared. However, the `bobsproject`
+folder will belong to a SNIC/NAISS project, e.g., `snic2022-12-345`, and it is
+this ID that is going to be needed in the URL for the web export server, e.g.,
+https://export.uppmax.uu.se/snic2022-12-345/ (and not
+https://export.uppmax.uu.se/bobsproject/).
+
+The conversion between the folder name and the SNIC/NAISS project ID is now
+handled automatically by the script.
+
+To see which project your project area belongs to, use the `uquota` script on
+rackham.
+
 ---
 
 ## The `webshare.sh` script:
 
 #### Usage
 
-    webshare.sh [-h] [-f folder] [-u user]
+    webshare.sh [-h] [-f folder] [-u user] [-p projid]
 
 #### Description
 
-    Webshared files in /proj/<projid>/webexport/<folder>/.
+    Webshare files in /proj/<id>/webexport/<folder>/.
     The URL (password protected) will be https://export.uppmax.uu.se/<projid>/<folder>/
+    Note that the URL needs to contain a Project ID, which may or may not be the same
+    as the <id> (the File area). If uncertain, check with the command 'uquota' on rackham.
     Usage:
         First, create <folder> with content to be shared.
         Then, cd to <folder> and run:
@@ -108,13 +122,12 @@ they will be prompted for a User Name (`kxlvtr`), and a Password (`cvtddq`).
             webshare.sh
 
         The user and password will be written to stdout. Write them down.
-        Optionally, both <folder> (full path!) and <user> can be given as arguments:
+        Optionally, both <folder> (full path!), <user> and <projid> can be given as arguments:
 
-            webshare.sh -f <folder> -u <user>
+            webshare.sh -f <folder> -u <user> -p <projid>
 
         The <folder> will be created if not already present.
-        Also note that the folder must reside inside a projects 'webexport' folder.
-
+        Also note that the folder must reside inside a project 'webexport' folder.
 
 ## Download
 
@@ -123,7 +136,7 @@ they will be prompted for a User Name (`kxlvtr`), and a Password (`cvtddq`).
 
 ## License and copyright
 
-Copyright (c) 2016-2022 Johan Nylander
+Copyright (c) 2016-2023 Johan Nylander
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -142,3 +155,4 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
