@@ -13,7 +13,7 @@ See also: [https://uppmax.uu.se/support-sv/user-guides/webexport-guide](https://
     mkdir -p /proj/xyz123/webexport/share
     cd /proj/xyz123/webexport/share
     cp -r /path/to/some_folder_or_file .
-    /proj/snic2017-7-343/dlbin/webshare.sh
+    /proj/snic2022-22-328/dlbin/webshare.sh
 
 ---
 
