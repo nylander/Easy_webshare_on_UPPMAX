@@ -86,7 +86,7 @@ they will be prompted for a User Name (`kxlvtr`), and a Password (`cvtddq`).
 
 ## Important note on file areas and project IDs
 
-New naming conventions of project folders on UPPMAX have comlicated matters
+New naming conventions of project folders on UPPMAX have complicated matters
 when sharing slightly.  A project folder, or "folder area", can now be named
 something simple as `/proj/bobsproject`. And you may put a `webexport` folder
 inside `/proj/bobsproject` with files to be shared. However, the `bobsproject`
